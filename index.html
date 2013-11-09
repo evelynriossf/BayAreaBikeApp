@@ -30,10 +30,7 @@
  <script type="text/javascript" src="http://teaching-materials.org/ajax/lib/jquery.min.js"></script>
  <script>
 
-$.ajax({type: "GET",
-  url: "http://bayareabikeshare.com/stations/json",
-  dataType: "json",
-  success: function(bikeshare) {
+$.getJSON("http://bayareabikeshare.com/stations/json", function(bikeshare) {
     var stationArray = [bikeshare.stationBeanList[52], bikeshare.stationBeanList[35], bikeshare.stationBeanList[31]];
     console.log(stationArray);
 
@@ -53,7 +50,7 @@ $.ajax({type: "GET",
      }
 
     }
-});
+);
 
  </script>
  </body>
