@@ -1,10 +1,15 @@
-
+<?php 
+header('Cache-Control: no-cache, must-revalidate');
+header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+?>
 <!doctype html>
 <html>
  <head>
   <meta charset="utf-8">
   <title>Bay Area Bike Share</title>
   <link rel="stylesheet" type="text/css" href="http://teaching-materials.org/ajax/lib/bootstrap.css">
+  <meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
+  <meta http-equiv="EXPIRES" content="Sat, 26 Jul 1997 05:00:00 GMT">
  </head>
  <body>
 
@@ -27,12 +32,12 @@
  </div>
 </div>
 
- <script type="text/javascript" src="http://teaching-materials.org/ajax/lib/jquery.min.js"></script>
- <script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="application/json" src="BayAreaBikeShare.php"></script>
 
-$.getJSON("http://bayareabikeshare.com/stations/json", function(bikeshare) {
+ <script>
+$.getJSON("BayAreaBikeShare.php", function(bikeshare) {
     var stationArray = [bikeshare.stationBeanList[52], bikeshare.stationBeanList[35], bikeshare.stationBeanList[31]];
-    console.log(stationArray);
 
     function addStationToList(stationInfo){
       var stationName = stationInfo.stationName;
@@ -49,8 +54,7 @@ $.getJSON("http://bayareabikeshare.com/stations/json", function(bikeshare) {
        addStationToList(stationArray[i]);
      }
 
-    }
-);
+    });
 
  </script>
  </body>
