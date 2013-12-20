@@ -46,16 +46,18 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
     $.getJSON("BayAreaBikeShare.php", function(bikeshare) {
 
-      var currentTime = [bikeshare.executionTime];
+      var currentDateTimeArray = [bikeshare.executionTime.split(" ")];
+      var currentDateArray = currentDateTimeArray[0][0].split("-");
+      console.log(currentDateArray);
 
       function displayTime(timeInfo){
         var timeParagraph = $('<p>');
-        timeParagraph.html('<h4>Current information as of: <br /><br />' + currentTime + '</h4><br />');
+        timeParagraph.html('<h4>Current information as of: <br />' + currentDateTimeArray[0][1] + ' ' + currentDateTimeArray[0][2] + '<br />' + currentDateArray[1] + '-' + currentDateArray[2] + '-' + currentDateArray[0] + '</h4><br />');
         var timeDisplay = $('#time');
         timeDisplay.append(timeParagraph);
       }
 
-      displayTime(currentTime);
+      displayTime(currentDateTimeArray);
 
       var stationArray = [bikeshare.stationBeanList[52], bikeshare.stationBeanList[35], bikeshare.stationBeanList[31]];
 
