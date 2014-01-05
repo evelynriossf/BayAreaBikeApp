@@ -1,0 +1,52 @@
+      	body {
+      		padding-top: 150px;
+      	}
+      	#time {
+      		text-align: right;
+      	}
+      	.navbar-nav {
+      		float: right;
+      	}
+
+      	#bikestationslist {
+      		/*      		text-align: right;*/
+      		/*      		float: right;*/
+      	}
+
+      	.btn-group {
+      		padding-left: 10px;
+
+      	}
+
+      	#station-map { 
+      		height:600px; 
+      		width: 50%; 
+      		float: left;
+      	}
+
+      	/* Foundation Causes the Zoom/Pan image to flub up.  These lines fix that */
+      	#station-map img, 
+      	#station-map object, 
+      	#station-map embed { max-width:none; }
+      	#station-map div { -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; }
+
+    /*
+     * Station Map Popup Window *
+     */
+     #station-map table tbody tr th, table tbody tr td {font-size: 14px; font-family: GtPressuraRegular,sans-serif; font-weight: bold;}
+     #station-map div.station-window { overflow: hidden; text-align:center }
+     #station-map div.station-window h2 { color:#0070CD; margin:0px 0px 10px 0px; letter-spacing:-0.3px; font-weight: bold; font-size:19px;}
+     .chrome #station-map div.station-window h2 { letter-spacing:-1.5px; } 
+     #station-map div.station-window table { margin:0px; box-shadow:none; -webkit-box-shadow:none; -moz-box-shadow:none; border:none; min-width:0px; width:auto; }
+     #station-map div.station-window table th { background:none; border:none; text-shadow:none; filter:none; }   
+     #station-map div.station-window table tbody th { color:#0070CD; vertical-align:middle; padding:5px; text-align:right; }
+     #station-map div.station-window table tbody td { color:#82C7BC; text-align:center; padding:5px 0px 5px 0px; border:none;  }
+     #station-map div.station-window table tbody tr { background: none; }
+     #station-map div.station-data { width:150px; margin:0 auto; }
+
+     /* Fixes a clash with Foundations and google maps windows */
+     #station-map div { -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; }
+/*
+     #cities { position:relative; z-index:1; -webkit-box-shadow: 0 0 4px 2px #666666; box-shadow: 0 0 4px 2px #666666; }
+     #cities button.tiny,
+     #cities .button.tiny { padding:9px 10px; }*/

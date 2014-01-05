@@ -1,10 +1,113 @@
-/* This file creates the Station Map
- * It uses jQuery selecting methods to allow the whole script to run and grab the station data from the server via jQuery.get()
- */
+		var stationCity;
+		var dropdownList;
+		var stationDropdown;
+		var stationName;
+		var latitude;
+		var longitude;
+		$.getJSON("BayAreaBikeShare.php", function(bikeshare) {
 
- jQuery(function($){
- 	var use_preset_zoom_center = true;
- 	var center = new google.maps.LatLng(37.790,-122.4125);
+			var currentDateTimeArray = [bikeshare.executionTime.split(" ")];
+			var currentDateArray = currentDateTimeArray[0][0].split("-");
+
+			function displayTime(timeInfo){
+				var timeParagraph = $('<p>');
+				timeParagraph.html('<h4><a href="http://bayareabikeshare.com/stations" target=new>Bay Area Bike Share</a> data current as of:<br />' + currentDateTimeArray[0][1] + ' ' + currentDateTimeArray[0][2] + '<br />' + currentDateArray[1] + '-' + currentDateArray[2] + '-' + currentDateArray[0] + '</h4><br />');
+				var timeDisplay = $('#time');
+				timeDisplay.append(timeParagraph);
+			}
+
+			displayTime(currentDateTimeArray);
+
+			var stationArray = [];
+
+			for (var i = 0; i < bikeshare.stationBeanList.length - 1; i++){
+				stationArray.push(bikeshare.stationBeanList[i]);
+			}
+
+			function addStationToDropdown(stationInfo){
+				var stationName = stationInfo.stationName;
+				var availableBikes = stationInfo.availableBikes;
+				var availableDocks = stationInfo.availableDocks;
+				var totalDocks = stationInfo.totalDocks;
+				stationCity = stationInfo.city;
+				var latitude = stationInfo.latitude;
+				var longitude = stationInfo.longitude;
+				stationDropdown = $('<option value="' + latitude + ', ' + longitude + '">');
+				stationDropdown.html('<a href="#">' + stationName + '</a>');
+				dropdownList = $('.bike-stations-dropdown');
+				if (stationCity == "San Francisco"){
+					dropdownList.append(stationDropdown);
+				}
+				var stationParagraph = $('<p>');
+				stationParagraph.html('<h3>' + stationName + '</h3><strong>Available Bikes: ' + availableBikes + '<br />Available Docks: ' + availableDocks + ' out of ' + totalDocks + '<br/><br/><br/></strong>');
+				var bikeStationList = $('#bike-stations-list');
+				bikeStationList.append(stationParagraph);
+			}
+
+			for (var i = 0; i < stationArray.length; i++) {
+				addStationToDropdown(stationArray[i]);
+			}
+
+		});
+
+//change list of bike stations in dropdown, by city
+function setCity(chosen){
+	console.log(chosen);
+	$.getJSON("BayAreaBikeShare.php", function(changeCities) {
+		var newStationArray = [];
+
+		for (var i = 0; i < changeCities.stationBeanList.length - 1; i++){
+			newStationArray.push(changeCities.stationBeanList[i]);
+		}
+
+		function changeStationDropdown(stationInfo){
+			stationName = stationInfo.stationName;
+			stationCity = stationInfo.city;
+			latitude = stationInfo.latitude;
+			longitude = stationInfo.longitude;
+			stationDropdown = $('<option value="' + latitude + ', ' + longitude + '">');
+			stationDropdown.html('<a href="#">' + stationName + '</a>');
+			dropdownList = $('.bike-stations-dropdown');
+			if (stationCity == chosen){
+				dropdownList.append(stationDropdown);
+			}
+
+		}
+		dropdownList.empty();
+		for (var i = 0; i < newStationArray.length; i++) {
+			changeStationDropdown(newStationArray[i]);
+		}
+
+	});
+}
+
+
+	// if (chosen == "San Francisco"){
+	// 	console.log(stationCitySelected);
+	// }
+	// if (chosen == 1){
+	// 	stationCitySelected = "Redwood City";
+	// 	console.log(stationCitySelected);
+	// }
+	// if (chosen == 2){
+	// 	stationCitySelected = "Palo Alto";
+	// 	console.log(stationCitySelected);
+	// }
+	// if (chosen == 3){
+	// 	stationCitySelected = "Mountain View";
+	// 	console.log(stationCitySelected);
+	// }
+	// if (chosen == 4){
+	// 	stationCitySelected = "San Jose";
+	// 	console.log(stationCitySelected);
+	// }
+
+
+
+
+//Map starts here
+var use_preset_zoom_center = true;
+var center = new google.maps.LatLng(37.790,-122.4125);
 
 	// Set Map Options
 	var mapOptions = {
@@ -16,13 +119,14 @@
 	
 	// Create the Google Map
 	var map = new google.maps.Map(document.getElementById("station-map"), mapOptions);
-	
-	//Arrays to keep all the planned and soon markers, to easily toggle them off 
-	var plannedMarkers = [];
+
+	// Add the Bicycling Layer
+	var bikeLayer = new google.maps.BicyclingLayer();
+	bikeLayer.setMap(map);
 
 	// Create the Popup Window when a user clicks on a station
 	var station_infowindow = new google.maps.InfoWindow({
-	});		
+	});
 	
 	// */ Get Stations
  //  	 Displays all of the stations as points on the map
@@ -68,12 +172,8 @@
 				// Iterate through each station
 				$.each(json.stationBeanList, function(i, station) {
 
-					// Change the icon based on its json status
-					if (station.statusValue == 'Planned')
-					{
-						icon = 'http://bayareabikeshare.com/assets/images/bayarea/icons/stations/map-icon-planned.png';
-					}
-					else if (station.statusValue == 'In Service')
+					// Show only In Service Stations
+					if (station.statusValue == 'In Service')
 					{
 						var icon = new google.maps.MarkerImage(
 							'http://bayareabikeshare.com/assets/images/bayarea/icons/stations/map-icons.png',
@@ -81,10 +181,6 @@
 							new google.maps.Point(0,sprite_offset(station.availableBikes,station.availableDocks)),
 							new google.maps.Point(22,53)
 							);
-					}
-					else
-					{
-						icon = 'http://bayareabikeshare.com/assets/images/bayarea/icons/stations/map-icon-outofservice.png';
 					}
 					
 					// Check for valid Lat (-90 to 90) and long (-180 to 180) and ignore 0,0	
@@ -104,6 +200,9 @@
 							icon : icon,
 							title : station.stationName
 						});
+
+						//Find the station elevation
+						var stationElevation = 'http://maps.googleapis.com/maps/api/elevation/json?locations=39.7391536,-104.9847034&sensor=true_or_false';
 
 						// Create an Event Listener that pops up the infoWindow when a user clicks a station
 						google.maps.event.addListener(marker, 'click', function() {
@@ -169,24 +268,6 @@
 	// Call the get_station_sponsors() method defined directly above to place the pins on the map
 	get_stations();
 	
-	/* 
-	*  show/hide Planned Stations
-	*/
-	$('.planned').click(function()
-	{
-		for (var i = 0; i < plannedMarkers.length; i++ ) 
-		{
-			if (plannedMarkers[i].getVisible()) 
-			{
-				plannedMarkers[i].setVisible(false);
-			}
-			else
-			{
-				plannedMarkers[i].setVisible(true);
-			}
-		}
-	});
-
 	/*
 	 * Pan Button Event Handlers
 	 * 
@@ -211,11 +292,11 @@
 	 	panToLocation(37.336316,-121.893339);
 	 });
 
-   /* if( $('#content.stations').length > 0 ) {
-        resizeMapToFit();
+	 if( $('#content.stations').length > 0 ) {
+	 	resizeMapToFit();
 
-        $(window).on('resize', resizeMapToFit);
-    }*/
+	 	$(window).on('resize', resizeMapToFit);
+	 }
 
 
 	/* Pan To Location
@@ -280,29 +361,31 @@
     * Make the map container sit in the remaining browser space*/
 
 
-    // function resizeMapToFit() {
+    function resizeMapToFit() {
 
-    //     var $window = $(window);
-    //     var elementHeight = 0;
+    	var $window = $(window);
+    	var elementHeight = 0;
 
-    //     elementHeight += $('#header:visible, #mobile-nav:visible').height();
-    //     elementHeight +=  $('#legend').height() + 50;
-    //     elementHeight +=  $('#cities').height();
-    //     elementHeight +=  $('#footer').height();
+    	elementHeight += $('#header:visible, #mobile-nav:visible').height();
+    	elementHeight +=  $('#legend').height() + 50;
+    	elementHeight +=  $('#cities').height();
+    	elementHeight +=  $('#footer').height();
 
-    //     $('#station-map').width($window.width()).height($window.height() - elementHeight);
+    	$('#station-map').width($window.width()).height($window.height() - elementHeight);
 
-    // }
+    }
 
-    var elevator;
-    var infowindow = new google.maps.InfoWindow(); 
+// Elevation
+var elevator;
+var elevation_infowindow = new google.maps.InfoWindow();
+var elevationData; 
 
-    function initialize() {
+function initialize() {
      // Create an ElevationService
      elevator = new google.maps.ElevationService();
   // Add a listener for the click event and call getElevation on that location
   google.maps.event.addListener(map, 'click', getElevation);
-}
+} // end initialize
 
 function getElevation(event) {
 
@@ -323,21 +406,41 @@ function getElevation(event) {
 
       // Retrieve the first result
       if (results[0]) {
-
+      	elevationData = Math.round(results[0].elevation * 3.28084);
         // Open an info window indicating the elevation at the clicked position
-        infowindow.setContent('The elevation at this point <br>is ' + Math.round(results[0].elevation * 3.28084) + ' feet.');
-        infowindow.setPosition(clickedLocation);
-        infowindow.open(map);
+        elevation_infowindow.setContent('The elevation at this point <br>is ' + elevationData + ' feet.');
+        elevation_infowindow.setPosition(clickedLocation);
+        elevation_infowindow.open(map);
     } else {
     	alert('No results found');
     }
 } else {
 	alert('Elevation service failed due to: ' + status);
 }
+
 });
-}
+
+} // end function getElevation
+
+//get station directions
+var directionsDisplay;
+directionsDisplay = new google.maps.DirectionsRenderer();
+directionsDisplay.setMap(map);
+function calcRoute() {
+	var routeStart = start.value;
+	var routeEnd = end.value;
+	var request = {
+		origin: routeStart,
+		destination: routeEnd,
+		travelMode: google.maps.TravelMode.BICYCLING
+	};
+	var directionsService = new google.maps.DirectionsService();
+	directionsService.route(request, function(response, status) {
+		if (status == google.maps.DirectionsStatus.OK) {
+			directionsDisplay.setDirections(response);
+		}
+	});
+} //end calcRoute
+
 
 google.maps.event.addDomListener(window, 'load', initialize);
-
-
-});
