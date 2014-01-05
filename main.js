@@ -11,7 +11,7 @@
 
 			function displayTime(timeInfo){
 				var timeParagraph = $('<p>');
-				timeParagraph.html('<h4><a href="http://bayareabikeshare.com/stations" target=new>Bay Area Bike Share</a> data current as of:<br />' + currentDateTimeArray[0][1] + ' ' + currentDateTimeArray[0][2] + '<br />' + currentDateArray[1] + '-' + currentDateArray[2] + '-' + currentDateArray[0] + '</h4><br />');
+				timeParagraph.html('<a href="http://bayareabikeshare.com/stations" target=new>Bay Area Bike Share</a> data current as of:<br />' + currentDateTimeArray[0][1] + ' ' + currentDateTimeArray[0][2] + '<br />' + currentDateArray[1] + '-' + currentDateArray[2] + '-' + currentDateArray[0] + '<br />');
 				var timeDisplay = $('#time');
 				timeDisplay.append(timeParagraph);
 			}

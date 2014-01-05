@@ -23,67 +23,70 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
       <style>
 
 
- </style>
-</head>
-<body>
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<div class="navbar-brand"><h1>Bay Area Bicycling App</h1></div>
-			</div>
-			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li>
-						<ul class="navbar-brand" id="time">
-						</ul>
-					</li>
-				</ul>
-			</div><!--/.nav-collapse -->
-		</div>
-	</div>
+      </style>
+  </head>
+  <body>
+  	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  		<div class="container">
+  			<div class="navbar-header">
+  				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+  					<span class="sr-only">Toggle navigation</span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  				</button>
+  				<div class="navbar-brand"><h1>Bay Area Bicycling App</h1></div>
+  			</div>
+  			<div class="collapse navbar-collapse">
+  				<ul class="nav navbar-nav navbar-right">
+  					<li>
+  						<ul class="navbar-brand" id="time">
+  						</ul>
+  					</li>
+  				</ul>
+  			</div><!--/.nav-collapse -->
+  		</div>
+  	</div>
 
-	<div id="station-map"></div>
+  	<div class="row">
 
-	<div id="bikestationslist">
+  		<div class="col-md-6" id="station-map"></div>
 
+  		<div class="col-md-6" id="bikestationslist">
 
-		<form class="btn-group" name="bikeshareform">
-			<h3>City</h3>
-			<select class="btn btn-default btn-lg" id="cities" name="cities" onchange="setCity(this.options[this.selectedIndex].value)">
-				<option value="San Francisco">San Francisco</option>
-				<option value="Redwood City">Redwood City</option>
-				<option value="Palo Alto">Palo Alto</option>
-				<option value="Mountain View">Mountain View</option>
-				<option value="San Jose">San Jose</option>
-			</select>
-			<br/>
-			<br/>
-			<h3>Starting Bike Station</h3>
-			<select class="btn btn-default btn-lg bike-stations-dropdown" id="start">
-			</select>
-			<br/>
-			<br/>
-			<h3>Ending Bike Station</h3>
-			<select class="btn btn-default btn-lg bike-stations-dropdown" id="end">
-			</select>
-			<br/>
-			<br/>
-			<button type="button" class="btn btn-success btn-toggle" id="Submit" onclick=calcRoute();>Submit</button>
-		</form>
-	</div>
-<!-- 	just a test -->
+  			<form class="btn-group" name="bikeshareform">
+  				<h3>City</h3>
+  				<select class="btn btn-default btn-lg" id="cities" name="cities" onchange="setCity(this.options[this.selectedIndex].value)">
+  					<option value="San Francisco">San Francisco</option>
+  					<option value="Redwood City">Redwood City</option>
+  					<option value="Palo Alto">Palo Alto</option>
+  					<option value="Mountain View">Mountain View</option>
+  					<option value="San Jose">San Jose</option>
+  				</select>
+  				<br/>
+  				<br/>
+  				<h3>Starting Bike Station</h3>
+  				<select class="btn btn-default btn-lg bike-stations-dropdown" id="start">
+  				</select>
+  				<br/>
+  				<br/>
+  				<h3>Ending Bike Station</h3>
+  				<select class="btn btn-default btn-lg bike-stations-dropdown" id="end">
+  				</select>
+  				<br/>
+  				<br/>
+  				<button type="button" class="btn btn-success btn-toggle" id="Submit" onclick=calcRoute();>Submit</button>
+  			</form>
 
-	<script src="https://code.jquery.com/jquery.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-	<script type="application/json" src="BayAreaBikeShare.php"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>	
-	<script src="main.js" type="text/javascript" charset="utf-8"></script>
+  		</div> <!-- end of bikestationsList -->
 
-</body>
-</html>
+  	</div>
+
+  	<script src="https://code.jquery.com/jquery.js"></script>
+  	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+  	<script type="application/json" src="BayAreaBikeShare.php"></script>
+  	<script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>	
+  	<script src="main.js" type="text/javascript" charset="utf-8"></script>
+
+  </body>
+  </html>
