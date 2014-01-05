@@ -20,13 +20,9 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
       <meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
       <meta http-equiv="EXPIRES" content="Sat, 26 Jul 1997 05:00:00 GMT">
-      <style>
-
-
-      </style>
   </head>
   <body>
-  	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  	<div class="navbar navbar-inverse navbar-static-top" role="navigation">
   		<div class="container">
   			<div class="navbar-header">
   				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -50,9 +46,9 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
   	<div class="row">
 
-  		<div class="col-md-6" id="station-map"></div>
 
-  		<div class="col-md-6" id="bikestationslist">
+
+  		<div class="col-md-4" id="bikestationslist">
 
   			<form class="btn-group" name="bikeshareform">
   				<h3>City</h3>
@@ -79,6 +75,8 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
   			</form>
 
   		</div> <!-- end of bikestationsList -->
+
+  		<div class="col-md-8" id="station-map"></div>
 
   	</div>
 

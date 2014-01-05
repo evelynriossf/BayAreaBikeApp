@@ -1,9 +1,10 @@
-      	body {
-      		padding-top: 105px;
-      	}
       	#time {
       		text-align: right;
       	}
+
+        #bikestationslist{
+          padding-left: 30px;
+        }
 
       	#station-map { 
       		height:650px;
