@@ -8,7 +8,7 @@ Adds the following functionality to http://bayareabikeshare.com/stations :
 <br/>
 -Elevation data
 <br/>
--A UI for biking directions between stations by city
+-A UI for biking directions between stations, organized by city
 <br/>
 -The total number of docks per station
 <br/>
