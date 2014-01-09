@@ -38,10 +38,6 @@
 				if (stationCity == "San Francisco"){
 					dropdownList.append(stationDropdown);
 				}
-				var stationParagraph = $('<p>');
-				stationParagraph.html('<h3>' + stationName + '</h3><strong>Available Bikes: ' + availableBikes + '<br />Available Docks: ' + availableDocks + ' out of ' + totalDocks + '<br/><br/><br/></strong>');
-				var bikeStationList = $('#bike-stations-list');
-				bikeStationList.append(stationParagraph);
 			}
 
 			for (var i = 0; i < stationArray.length; i++) {
