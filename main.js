@@ -20,7 +20,7 @@
 
 			var stationArray = [];
 
-			for (var i = 0; i < bikeshare.stationBeanList.length - 1; i++){
+			for (var i = 0; i < bikeshare.stationBeanList.length; i++){
 				stationArray.push(bikeshare.stationBeanList[i]);
 			}
 
@@ -52,11 +52,9 @@
 
 //change list of bike stations in dropdown, by city
 function setCity(chosen){
-	console.log(chosen);
 	$.getJSON("BayAreaBikeShare.php", function(changeCities) {
 		var newStationArray = [];
-
-		for (var i = 0; i < changeCities.stationBeanList.length - 1; i++){
+		for (var i = 0; i < changeCities.stationBeanList.length; i++){
 			newStationArray.push(changeCities.stationBeanList[i]);
 		}
 
@@ -77,32 +75,10 @@ function setCity(chosen){
 		for (var i = 0; i < newStationArray.length; i++) {
 			changeStationDropdown(newStationArray[i]);
 		}
+		changeMapLocation(chosen);
 
 	});
 }
-
-
-	// if (chosen == "San Francisco"){
-	// 	console.log(stationCitySelected);
-	// }
-	// if (chosen == 1){
-	// 	stationCitySelected = "Redwood City";
-	// 	console.log(stationCitySelected);
-	// }
-	// if (chosen == 2){
-	// 	stationCitySelected = "Palo Alto";
-	// 	console.log(stationCitySelected);
-	// }
-	// if (chosen == 3){
-	// 	stationCitySelected = "Mountain View";
-	// 	console.log(stationCitySelected);
-	// }
-	// if (chosen == 4){
-	// 	stationCitySelected = "San Jose";
-	// 	console.log(stationCitySelected);
-	// }
-
-
 
 
 //Map starts here
@@ -268,49 +244,30 @@ var center = new google.maps.LatLng(37.790,-122.4125);
 	// Call the get_station_sponsors() method defined directly above to place the pins on the map
 	get_stations();
 	
-	/*
-	 * Pan Button Event Handlers
-	 * 
-	 */
-	 $('#sf.button').click(function(){
-	 	panToLocation(37.790,-122.4183)
-	 });
 
-	 $('#redwoodcity.button').click(function(){
-	 	panToLocation(37.486301,-122.237377);
-	 });
+  	 // Pans the map to the specified lat/long
+  	 function changeMapLocation(chosen){
+  	 	if (chosen == "San Francisco"){
+  	 		panToLocation(37.790,-122.4183)
+  	 	}
+  	 	else if (chosen == "Redwood City"){
+  	 		panToLocation(37.486301,-122.237377);
+  	 	}
+  	 	else if (chosen == "Palo Alto"){
+  	 		panToLocation(37.43747,-122.146281);
+  	 	}
+  	 	else if (chosen == "Mountain View"){
+  	 		panToLocation(37.395255,-122.078762);
+  	 	}
+  	 	else if (chosen == "San Jose"){
+  	 		panToLocation(37.336316,-121.893339);
+  	 	}
+  	 }
 
-	 $('#paloalto.button').click(function(){
-	 	panToLocation(37.44747,-122.166281);
-	 });
-
-	 $('#mountainview.button').click(function(){
-	 	panToLocation(37.395255,-122.078762);
-	 });
-
-	 $('#sanjose.button').click(function(){
-	 	panToLocation(37.336316,-121.893339);
-	 });
-
-	 if( $('#content.stations').length > 0 ) {
-	 	resizeMapToFit();
-
-	 	$(window).on('resize', resizeMapToFit);
-	 }
-
-
-	/* Pan To Location
-  	 * Pans the map to the specified lat/long
-  	 * 
-  	 * @param lat
-  	 * @param lng
-  	 * 
-  	 */
   	 function panToLocation(lat, lng)
   	 {
 		// Create a Lat/Long Object
-		var latLng = new google.maps.LatLng(lat, lng);
-		
+		var latLng = new google.maps.LatLng(lat, lng);		
 		// Pan To the Lat/Long 
 		map.panTo(latLng);
 	}

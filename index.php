@@ -50,7 +50,7 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
   		<div class="col-md-4" id="bikestationslist">
 
-  			<form class="btn-group" name="bikeshareform">
+  			<form name="bikeshareform">
   				<h3>City</h3>
   				<select class="btn btn-default btn-lg" id="cities" name="cities" onchange="setCity(this.options[this.selectedIndex].value)">
   					<option value="San Francisco">San Francisco</option>
@@ -71,7 +71,7 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
   				</select>
   				<br/>
   				<br/>
-  				<button type="button" class="btn btn-success btn-toggle" id="Submit" onclick=calcRoute();>Submit</button>
+  				<button type="button" class="btn btn-success btn-toggle" id="Submit" onclick="calcRoute();">Submit</button>
   			</form>
 
   		</div> <!-- end of bikestationsList -->
