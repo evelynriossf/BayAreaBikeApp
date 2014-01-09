@@ -189,6 +189,9 @@ var center = new google.maps.LatLng(37.790,-122.4125);
 													    '<tr><th>Available Bikes:</th><td>' + station.availableBikes + '</td></tr>' +
 													    '<tr><th>Available Docks:</th><td>' + station.availableDocks + ' out of ' + station.totalDocks + '</td></tr>' +
 													    '</table>'	+
+													    '<a onclick="setStartingBikeStation()">Set as starting bike station</a>' +
+													    '<p>' +
+													    '<a onclick="setEndingBikeStation()">Set as ending bike station</a>' +
 													    '</div>'
 													    ) +
 													'</div>';
@@ -266,10 +269,11 @@ var center = new google.maps.LatLng(37.790,-122.4125);
 		var latLng = new google.maps.LatLng(lat, lng);		
 		// Pan To the Lat/Long 
 		map.panTo(latLng);
+		map.setZoom(14);
 	}
 
 	/* sprite_offset
-  	 * This function helps display different pins baased on station bike/dock availability
+  	 * This function helps display different pins based on station bike/dock availability
   	 * 0 is 0% shaded (empty), 1 is 25% shaded, 2 is 50% shaded, 3 is 75% shaded, 4 is 100% shaded (full), 5 is all grey "not in service"
   	 * 
   	 * @param bikes
