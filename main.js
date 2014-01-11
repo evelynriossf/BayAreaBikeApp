@@ -81,6 +81,7 @@ function setCity(chosen){
 var use_preset_zoom_center = true;
 var center = new google.maps.LatLng(37.790,-122.4125);
 
+
 	// Set Map Options
 	var mapOptions = {
 		mapTypeId: google.maps.MapTypeId.TERRAIN,

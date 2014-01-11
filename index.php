@@ -72,11 +72,13 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
   				<br/>
   				<br/>
   				<button type="button" class="btn btn-success btn-toggle" id="Submit" onclick="calcRoute();">Submit</button>
+  				<br/>
+  				<br/>
   			</form>
 
   		</div> <!-- end of bikestationsList -->
 
-  		<div class="col-md-8" id="station-map"></div>
+  		<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-7 col-md-offset-0" id="station-map"></div>
 
   	</div>
 
