@@ -55,16 +55,20 @@ function setCity(chosen){
 		}
 
 		function changeStationDropdown(stationInfo){
-			stationName = stationInfo.stationName;
 			stationCity = stationInfo.city;
+			stationName = stationInfo.stationName;
 			latitude = stationInfo.latitude;
 			longitude = stationInfo.longitude;
 			stationDropdown = $('<option value="' + latitude + ', ' + longitude + '">');
 			stationDropdown.html('<a href="#">' + stationName + '</a>');
 			dropdownList = $('.bike-stations-dropdown');
-			if (stationCity == chosen){
+			if (chosen == "San Francisco" & stationCity == chosen){
 				dropdownList.append(stationDropdown);
 			}
+			else if(chosen != "San Francisco" & stationCity != "San Francisco"){
+				dropdownList.append(stationDropdown);
+			}
+
 
 		}
 		dropdownList.empty();
@@ -75,6 +79,14 @@ function setCity(chosen){
 
 	});
 }
+
+function setStartingBikeStation(latitude, longitude) {
+	document.getElementById("start").value = latitude + ', ' + longitude;
+}
+function setEndingBikeStation(latitude, longitude) {
+	document.getElementById("end").value = latitude + ', ' + longitude;
+}
+
 
 
 //Map starts here
@@ -190,9 +202,9 @@ var center = new google.maps.LatLng(37.790,-122.4125);
 													    '<tr><th>Available Bikes:</th><td>' + station.availableBikes + '</td></tr>' +
 													    '<tr><th>Available Docks:</th><td>' + station.availableDocks + ' out of ' + station.totalDocks + '</td></tr>' +
 													    '</table>'	+
-													    '<a onclick="setStartingBikeStation()">Set as starting bike station</a>' +
+													    '<a onclick="setStartingBikeStation(' + station.latitude + ',' + station.longitude + ')">Set as starting bike station</a>' +
 													    '<p>' +
-													    '<a onclick="setEndingBikeStation()">Set as ending bike station</a>' +
+													    '<a onclick="setEndingBikeStation(' + station.latitude + ',' + station.longitude + ')">Set as ending bike station</a>' +
 													    '</div>'
 													    ) +
 													'</div>';
@@ -251,7 +263,7 @@ var center = new google.maps.LatLng(37.790,-122.4125);
   	 		panToLocation(37.790,-122.4183)
   	 	}
   	 	else if (chosen == "Redwood City"){
-  	 		panToLocation(37.486301,-122.237377);
+  	 		panToLocation(37.484022,-122.227671);
   	 	}
   	 	else if (chosen == "Palo Alto"){
   	 		panToLocation(37.43747,-122.146281);
@@ -260,7 +272,7 @@ var center = new google.maps.LatLng(37.790,-122.4125);
   	 		panToLocation(37.395255,-122.078762);
   	 	}
   	 	else if (chosen == "San Jose"){
-  	 		panToLocation(37.336316,-121.893339);
+  	 		panToLocation(37.339301,-121.889937);
   	 	}
   	 }
 
@@ -380,10 +392,12 @@ function getElevation(event) {
 
 } // end function getElevation
 
-//get station directions
+//get and render station directions
 var directionsDisplay;
 directionsDisplay = new google.maps.DirectionsRenderer();
 directionsDisplay.setMap(map);
+directionsDisplay.setPanel(document.getElementById('directions-panel'));
+
 function calcRoute() {
 	var routeStart = start.value;
 	var routeEnd = end.value;
