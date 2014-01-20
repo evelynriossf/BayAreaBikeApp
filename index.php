@@ -71,7 +71,7 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
    </select>
    <br/>
    <br/>
-   <button type="button" class="btn btn-success btn-toggle" id="Submit" onclick="calcRoute();">Submit</button>
+   <button type="button" class="btn btn-success btn-toggle" class="Submit" onclick="calcRoute();">Get Directions</button>
    <br/>
    <br/>
  </form>

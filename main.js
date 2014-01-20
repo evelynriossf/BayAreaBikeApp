@@ -82,9 +82,11 @@ function setCity(chosen){
 
 function setStartingBikeStation(latitude, longitude) {
 	document.getElementById("start").value = latitude + ', ' + longitude;
+	$( "#startingbikestation" ).replaceWith("This is your starting bike station");
 }
 function setEndingBikeStation(latitude, longitude) {
 	document.getElementById("end").value = latitude + ', ' + longitude;
+		$( "#endingbikestation" ).replaceWith("This is your ending bike station");
 }
 
 
@@ -202,9 +204,10 @@ var center = new google.maps.LatLng(37.790,-122.4125);
 													    '<tr><th>Available Bikes:</th><td>' + station.availableBikes + '</td></tr>' +
 													    '<tr><th>Available Docks:</th><td>' + station.availableDocks + ' out of ' + station.totalDocks + '</td></tr>' +
 													    '</table>'	+
-													    '<a onclick="setStartingBikeStation(' + station.latitude + ',' + station.longitude + ')">Set as starting bike station</a>' +
+													    '<a onclick="setStartingBikeStation(' + station.latitude + ',' + station.longitude + ')" id="startingbikestation">Set as starting bike station</a>' +
 													    '<p>' +
-													    '<a onclick="setEndingBikeStation(' + station.latitude + ',' + station.longitude + ')">Set as ending bike station</a>' +
+													    '<a onclick="setEndingBikeStation(' + station.latitude + ',' + station.longitude + ')" id="endingbikestation">Set as ending bike station</a>' +
+													    '<button type="button" class="btn btn-link" class="Submit" onclick="calcRoute();">Get Directions</button>' +
 													    '</div>'
 													    ) +
 													'</div>';
