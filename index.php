@@ -84,7 +84,7 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script type="application/json" src="BayAreaBikeShare.php"></script>
+<!-- <script type="application/json" src="BayAreaBikeShare.php"></script> -->
 <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false" type="text/javascript"></script>	
 <script src="main.js" type="text/javascript" charset="utf-8"></script>
 
