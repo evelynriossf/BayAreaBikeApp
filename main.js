@@ -160,7 +160,7 @@ function setCity(chosen){
 	$.getJSON("BayAreaBikeShare.php", function(changeCities) {
 		var newStationArray = [];
 
-		for (var i = 0; i < changeCities.stationBeanList.length - 1; i++){
+		for (var i = 0; i < changeCities.stationBeanList.length; i++){
 			newStationArray.push(changeCities.stationBeanList[i]);
 		}
 
