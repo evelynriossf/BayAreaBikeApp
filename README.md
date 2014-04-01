@@ -1,5 +1,7 @@
 Bay Area Bike App
 ================
+Hosted at bikeapp.evelynrios.com
+<br?>
 Adds the following functionality to http://bayareabikeshare.com/stations :
 <br/>
 -Terrain
