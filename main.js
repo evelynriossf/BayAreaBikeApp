@@ -5,7 +5,7 @@ var stationName;
 var latitude;
 var longitude;
 
-function get(){		
+function getBikeData(){
 	$.getJSON("BayAreaBikeShare.php", jsonDataCallback);
 
 	function jsonDataCallback(json) {
@@ -152,9 +152,11 @@ bounds.extend(point);
 
 	} //end jsonDataCallback
 } // end get()
-get();
+
+getBikeData();
+
 setInterval(function(){
-	get();
+	getBikeData();
 }, 60000);
 
 //change list of bike stations in dropdown, by city
@@ -332,5 +334,3 @@ function calcRoute() {
 		}
 	});
 } //end calcRoute
-
-// google.maps.event.addDomListener(window, 'load', initialize);
