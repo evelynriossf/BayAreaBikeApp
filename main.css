@@ -25,7 +25,6 @@
      #station-map div.station-window table { margin:0px; box-shadow:none; -webkit-box-shadow:none; -moz-box-shadow:none; border:none; min-width:0px; width:auto; }
      #station-map div.station-window table th { background:none; border:none; text-shadow:none; filter:none; }   
      #station-map div.station-window table tbody th { color:#0070CD; vertical-align:middle; padding:5px; text-align:right; }
-     #station-map div.station-window table tbody td { color:#82C7BC; text-align:center; padding:5px 0px 5px 0px; border:none;  }
+     #station-map div.station-window table tbody td { color:#82C7BC; text-align:right; padding:5px 0px 5px 0px; border:none;  }
      #station-map div.station-window table tbody tr { background: none; }
-     #station-map div.station-data { width:150px; margin:0 auto; }
-
+     #station-map div.station-data { width:200px; margin:0 auto; }

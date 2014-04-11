@@ -54,8 +54,7 @@ function get(){
 		$.each(json.stationBeanList, function(i, station) {
 
 			// Show only In Service Stations
-			if (station.statusValue == 'In Service')
-			{
+			if (station.statusValue == 'In Service'){
 				var icon = new google.maps.MarkerImage(
 					'http://bayareabikeshare.com/assets/images/bayarea/icons/stations/map-icons.png',
 					new google.maps.Size(42,53),
@@ -82,66 +81,70 @@ function get(){
 					title : station.stationName
 				});
 
-				//Find the station elevation
-				var stationElevation = 'http://maps.googleapis.com/maps/api/elevation/json?locations=39.7391536,-104.9847034&sensor=true_or_false';
-
 				// Create an Event Listener that pops up the infoWindow when a user clicks a station
-				google.maps.event.addListener(marker, 'click', function() {
-					contentString='<div class="station-window">' +
-										// Sets a temporary padding, this helps the station name stay on all one line. Google maps doesn't like the text-transform:uppercase without this
-										'<h2 class="temp-padding" style="padding-right: 1.5em">' + station.stationName + '</h2>' +
-											//if the station is planned, put up a small message saying it is planned, if not, put the table up
-											(station.statusValue == 'Planned' ?	"<i>(planned station)</i>" :
-											    //if we have don't have sponsorship info:....
-											    '<div class="station-data">' +
-											    '<table id="station-table">' + 
-											    '<tr><th>Available Bikes:</th><td>' + station.availableBikes + '</td></tr>' +
-											    '<tr><th>Available Docks:</th><td>' + station.availableDocks + ' out of ' + station.totalDocks + '</td></tr>' +
-											    '</table>'	+
-											    '<a onclick="setStartingBikeStation(' + station.latitude + ',' + station.longitude + ')" id="startingbikestation">Set as starting bike station</a>' +
-											    '<p>' +
-											    '<a onclick="setEndingBikeStation(' + station.latitude + ',' + station.longitude + ')" id="endingbikestation">Set as ending bike station</a>' +
-											    '<button type="button" class="btn btn-link" class="Submit" onclick="calcRoute();">Get Directions</button>' +
-											    '</div>'
-											    ) +
-											'</div>';
+				google.maps.event.addListener(marker, 'click', function(event) {
+					var elevator = new google.maps.ElevationService();
+					var locations = [];
+					var clickedLocation = event.latLng;
+					locations.push(clickedLocation);
+					var positionalRequest = {
+						'locations': locations
+					}
+					var elevationData = 0;
+					elevator.getElevationForLocations(positionalRequest, function(results, status) {
+						if (status == google.maps.ElevationStatus.OK) {
+							if (results[0]) {
+								elevationData = Math.round(results[0].elevation * 3.28084);
+								popup(elevationData);
+							}
+							else {
+								elevationData = 0;
+								popup(elevationData);
+							}
+						}
+						else {
+							elevationData = 0;
+							popup(elevationData);
+						}
+					}); // End elevator
 
-					// This code helps prevent scroll-bars. Create an element, put the content in the element, then put the element in the window (below)
-					var div = document.createElement('div');
-					div.innerHTML = contentString;
+					function popup(elevationData){
+						contentString='<div class="station-window">' +
+						'<h2>' + station.stationName + '</h2>' +
+						(station.statusValue == 'Planned' ?	"<i>(planned station)</i>" :
+							'<div class="station-data">' +
+							'<table id="station-table">' + 
+							'<tr><th>Available Bikes:</th><td>' + station.availableBikes + '</td></tr>' +
+							'<tr><th>Available Docks:</th><td>' + station.availableDocks + ' out of ' + station.totalDocks + '</td></tr>' +
+							'<tr><th>Elevation:</th><td> ' + elevationData + ' feet</td></tr>' +
+							'</table>'	+
+							'<a onclick="setStartingBikeStation(' + station.latitude + ',' + station.longitude + ')" id="startingbikestation">Set as starting bike station</a>' +
+							'<p>' +
+							'<a onclick="setEndingBikeStation(' + station.latitude + ',' + station.longitude + ')" id="endingbikestation">Set as ending bike station</a>' +
+							'<button type="button" class="btn btn-link" class="Submit" onclick="calcRoute();">Get Directions</button>' +
+							'</div>'
+							) +
+						'</div>';
+						var div = document.createElement('div');
+						div.innerHTML = contentString;
+						station_infowindow.setContent(div);
+						station_infowindow.open(map, marker);
+						google.maps.event.addListener(station_infowindow, 'domready', function() {
+							$('.temp-padding').css('padding-right', '0');
+							var table_height = $('#station-table').height();
+							var table_margin = ($('.sponsor-img').attr("height") - table_height) / 2;
+							table_margin = Math.max(table_margin, 0);
+							$('.station-data-w-table').css('margin-top', table_margin);
+							var img_margin = (table_height - $('.sponsor-img').attr("height")) / 2;
+							img_margin = Math.max(img_margin, 0);
+							$('.sponsor-img').css('margin-top', img_margin);
+						});
+					}
 
-					// Set the content in the infowindow
-					station_infowindow.setContent(div);
-
-					// Open the InfoWindow
-					station_infowindow.open(map, marker);
-
-					// Create an event listener that runs when the infowindow is fully popped-up. This is so we can reset the margins
-					google.maps.event.addListener(station_infowindow, 'domready', function() {
-						// Resets the h2 padding back to zero
-						$('.temp-padding').css('padding-right', '0');
-
-						// Get the height of the table, to base the margin of the image and the table off of one another
-						var table_height = $('#station-table').height();
-
-						// Set the top margin of the table to a relative value of the image size, if the table is smaller than the image
-						var table_margin = ($('.sponsor-img').attr("height") - table_height) / 2;
-						table_margin = Math.max(table_margin, 0);
-						$('.station-data-w-table').css('margin-top', table_margin);
-
-						// Set the top margin of the image to a relative value of the table size, if the image is smaller than the table
-						var img_margin = (table_height - $('.sponsor-img').attr("height")) / 2;
-						img_margin = Math.max(img_margin, 0);
-						$('.sponsor-img').css('margin-top', img_margin);
-					});
-					// End of infowindow domready event listener
-				});
-				// End of google map marker click event listener
-				bounds.extend(point);
-
+	            }); // End InfoWindow event listener
+bounds.extend(point);
 			} //end of hard-coded station omission
-		});
-		// End of $.each() json station
+		}); // End of $.each() json station
 
 		// Reset the center of the map to the station coordinates and zoom to the bounds
 		if (!use_preset_zoom_center) 
@@ -294,7 +297,6 @@ return offset;
 /**
 * Make the map container sit in the remaining browser space*/
 
-
 function resizeMapToFit() {
 
 	var $window = $(window);
@@ -308,53 +310,6 @@ function resizeMapToFit() {
 	$('#station-map').width($window.width()).height($window.height() - elementHeight);
 
 }
-
-// Elevation
-var elevator;
-var elevation_infowindow = new google.maps.InfoWindow();
-var elevationData; 
-
-function initialize() {
-// Create an ElevationService
-elevator = new google.maps.ElevationService();
-// Add a listener for the click event and call getElevation on that location
-google.maps.event.addListener(map, 'click', getElevation);
-} // end initialize
-
-function getElevation(event) {
-
-	var locations = [];
-
-// Retrieve the clicked location and push it on the array
-var clickedLocation = event.latLng;
-locations.push(clickedLocation);
-
-// Create a LocationElevationRequest object using the array's one value
-var positionalRequest = {
-	'locations': locations
-}
-
-// Initiate the location request
-elevator.getElevationForLocations(positionalRequest, function(results, status) {
-	if (status == google.maps.ElevationStatus.OK) {
-
-// Retrieve the first result
-if (results[0]) {
-	elevationData = Math.round(results[0].elevation * 3.28084);
-// Open an info window indicating the elevation at the clicked position
-elevation_infowindow.setContent('The elevation at this point <br>is ' + elevationData + ' feet.');
-elevation_infowindow.setPosition(clickedLocation);
-elevation_infowindow.open(map);
-} else {
-	alert('No results found');
-}
-} else {
-	alert('Elevation service failed due to: ' + status);
-}
-
-});
-
-} // end function getElevation
 
 //get and render station directions
 var directionsDisplay;
@@ -378,5 +333,4 @@ function calcRoute() {
 	});
 } //end calcRoute
 
-
-google.maps.event.addDomListener(window, 'load', initialize);
+// google.maps.event.addDomListener(window, 'load', initialize);
