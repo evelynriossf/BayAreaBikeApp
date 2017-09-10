@@ -6,11 +6,11 @@ var latitude;
 var longitude;
 
 function getBikeData(){
-	$.getJSON("BayAreaBikeShare.php", jsonDataCallback);
+	$.getJSON("station_status.php", jsonDataCallback);
 
 	function jsonDataCallback(json) {
 
-		var currentDateTimeArray = [json.executionTime.split(" ")];
+		var currentDateTimeArray = [json.last_updated.split(" ")];
 		var currentDateArray = currentDateTimeArray[0][0].split("-");
 
 		function displayTime(timeInfo){
@@ -24,12 +24,12 @@ function getBikeData(){
 
 		var stationArray = [];
 
-		for (var i = 0; i < json.stationBeanList.length; i++){
-			stationArray.push(json.stationBeanList[i]);
+		for (var i = 0; i < json.data.stations.length; i++){
+			stationArray.push(json.data[i]);
 		}
 
 		function addStationToDropdown(stationInfo){
-			var stationName = stationInfo.stationName;
+			var stationName = stationInfo.station_id;
 			var availableBikes = stationInfo.availableBikes;
 			var availableDocks = stationInfo.availableDocks;
 			var totalDocks = stationInfo.totalDocks;
@@ -51,7 +51,7 @@ function getBikeData(){
 		// Create a new instance of LatLngBounds to use for re-centering the map after all the stations are loaded
 		var bounds = new google.maps.LatLngBounds();
 
-		$.each(json.stationBeanList, function(i, station) {
+		$.each(json.stations, function(i, station) {
 
 			// Show only In Service Stations
 			if (station.statusValue == 'In Service'){
@@ -165,8 +165,8 @@ function setCity(chosen){
 	$.getJSON("BayAreaBikeShare.php", function(changeCities) {
 		var newStationArray = [];
 
-		for (var i = 0; i < changeCities.stationBeanList.length; i++){
-			newStationArray.push(changeCities.stationBeanList[i]);
+		for (var i = 0; i < changeCities.stations.length; i++){
+			newStationArray.push(changeCities.stations[i]);
 		}
 
 		function changeStationDropdown(stationInfo){
