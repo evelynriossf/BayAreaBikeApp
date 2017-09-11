@@ -9,27 +9,27 @@ function getBikeData(){
 	$.getJSON("station_status.php", jsonDataCallback);
 
 	function jsonDataCallback(json) {
-
-		var currentDateTimeArray = [json.last_updated.split(" ")];
-		var currentDateArray = currentDateTimeArray[0][0].split("-");
-
+		var currentDate = new Date([json.last_updated.toString()] *1000);
+		
 		function displayTime(timeInfo){
 			var timeParagraph = $('<p>');
-			timeParagraph.html('<a href="http://bayareabikeshare.com/stations" target=new>Bay Area Bike Share</a> data current as of:<br />' + currentDateTimeArray[0][1] + ' ' + currentDateTimeArray[0][2] + '<br />' + currentDateArray[1] + '-' + currentDateArray[2] + '-' + currentDateArray[0] + '<br />');
+			timeParagraph.html('<a href="http://bayareabikeshare.com/stations" target=new>Bay Area Bike Share</a> data current as of:<br />' + currentDate);
 			var timeDisplay = $('#time');
 			timeDisplay.html(timeParagraph);
 		}
 
-		displayTime(currentDateTimeArray);
+		displayTime(currentDate);
 
 		var stationArray = [];
 
 		for (var i = 0; i < json.data.stations.length; i++){
 			stationArray.push(json.data[i]);
 		}
+		console.log(stationArray);
 
 		function addStationToDropdown(stationInfo){
 			var stationName = stationInfo.station_id;
+			console.log(stationName);
 			var availableBikes = stationInfo.availableBikes;
 			var availableDocks = stationInfo.availableDocks;
 			var totalDocks = stationInfo.totalDocks;
